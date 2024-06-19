@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarak Terpendek dari Universitas Negeri Medan ke Stasiun Kereta Api Medan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px; /* Ukuran huruf lebih kecil */
+            font-weight: normal; /* Menghapus bold */
+            text-transform: uppercase;
+            letter-spacing: 1px; /* Menambah spasi antar huruf */
+            font-family: 'Arial', sans-serif; /* Menggunakan jenis font Arial */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-transform: uppercase; /* Huruf menjadi kapital */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Jarak Terpendek dari Universitas Negeri Medan ke Stasiun Kereta Api Medan</h2>
+        <div class="form-group">
+            <label for="titik_awal">Titik Awal:</label>
+            <input type="text" id="titik_awal" name="titik_awal" required pattern="[A-Za-z]+" title="Masukkan hanya huruf">
+        </div>
+        <div class="form-group">
+            <label for="titik_akhir">Titik Akhir:</label>
+            <input type="text" id="titik_akhir" name="titik_akhir" required pattern="[A-Za-z]+" title="Masukkan hanya huruf">
+        </div>
+        <button onclick="hitungJarak()">Hitung Jarak</button>
+        <div class="result" id="hasil_jarak"></div>
+    </div>
+
+    <script>
+        function hitungJarak() {
+            var titikAwal = document.getElementById('titik_awal').value.toUpperCase(); // Mengubah menjadi huruf besar
+            var titikAkhir = document.getElementById('titik_akhir').value.toUpperCase(); // Mengubah menjadi huruf besar
+            
+            fetch('/hitung_jarak', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ titikAwal: titikAwal, titikAkhir: titikAkhir })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('hasil_jarak').textContent = `Jarak terpendek dari ${titikAwal} ke ${titikAkhir} adalah ${data.jarak} satuan.`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
